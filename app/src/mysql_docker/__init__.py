@@ -10,7 +10,7 @@ import os.path
 from flask import Flask, send_from_directory, g, session, request, render_template, current_app
 from jinja2 import ChoiceLoader, PackageLoader
 from flask_security import SQLAlchemyUserDatastore, current_user
-from sqlalchemy.exc import NoReferencedTableError
+from sqlalchemy.exc import NoReferencedTableError, ProgrammingError
 
 # homegrown
 import loutilities
@@ -92,7 +92,7 @@ def create_app(config_obj, configfiles=None, init_for_operation=True):
         database_available = True
         try:
             users = User.query.all()
-        except NoReferencedTableError:
+        except (NoReferencedTableError, ProgrammingError):
             database_available = False
     
         # g.loutility needs to be set before update_local_tables called and before UserSecurity() instantiated
@@ -140,7 +140,7 @@ def create_app(config_obj, configfiles=None, init_for_operation=True):
         if 'SQLALCHEMY_BINDS' in app.config and app.config['SQLALCHEMY_BINDS']:
             db.session = scoped_session(sessionmaker(autocommit=False,
                                                     autoflush=False,
-                                                    # binds=db.get_binds()
+                                                    binds=db.get_binds(app)
                                                     ))
         else:
             db.session = scoped_session(sessionmaker(autocommit=False,

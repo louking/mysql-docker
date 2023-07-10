@@ -75,7 +75,7 @@ class RealDb(Config):
         db_uri = f'mysql://{dbuser}:{password}@{dbserver}/{dbname}'
         self.SQLALCHEMY_DATABASE_URI = db_uri
         # when user database is available, add bind
-        if 'userdbname' in config:
+        if 'usersdbname' in config:
             # https://flask-sqlalchemy.palletsprojects.com/en/2.x/binds/
             usersdbuser = config['usersdbuser']
             with open(f'/run/secrets/users-password') as pw:
