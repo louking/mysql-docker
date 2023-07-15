@@ -140,7 +140,7 @@ def create_app(config_obj, configfiles=None, init_for_operation=True):
         if 'SQLALCHEMY_BINDS' in app.config and app.config['SQLALCHEMY_BINDS']:
             db.session = scoped_session(sessionmaker(autocommit=False,
                                                     autoflush=False,
-                                                    binds=db.get_binds(app)
+                                                    binds=db.get_binds()
                                                     ))
         else:
             db.session = scoped_session(sessionmaker(autocommit=False,
