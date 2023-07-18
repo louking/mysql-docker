@@ -35,7 +35,7 @@ services:
     networks:
       - frontend-network
     ports:
-      - ${PHPMYADMIN_PORT}:80
+      - ${MYSQL_DOCKER_PORT}:80
     # uncomment to debug
     # command: [nginx-debug, '-g', 'daemon off;']
 
@@ -71,7 +71,7 @@ services:
     # use this to debug
     # command: ["crond", "-f", "-d", "8", "-l", "2", "-L", "/dev/stdout"]
 
-  shell:
+  app:
     build: 
       context: app
       args:
@@ -87,15 +87,13 @@ services:
       - backend-network
       - frontend-network
     volumes:
-      - ./app/src:/app
       - ./config:/config:ro
     environment:
       - FLASK_DEBUG=True
       - APP_DATABASE=mysql-docker
       - APP_USER=mysql-docker
       - APP_PASSWORD_FILE=/run/secrets/mysql-docker-password
-    tty: true # https://stackoverflow.com/a/55953120/799921
-    command: ["./dbupgrade_and_run.sh", "bash"]
+    command: ["./dbupgrade_and_run.sh", "gunicorn", "--reload", "--bind", "0.0.0.0:5000", "app:app"]
 
 volumes:
   db-data:

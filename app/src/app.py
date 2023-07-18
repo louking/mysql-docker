@@ -31,10 +31,10 @@ app = create_app(Production(configfiles), configfiles, init_for_operation=False)
 migrate_cli = Migrate(app, db, compare_type=True)
 init_cli = InitCli(app, db)
 
-## Needed only if serving web pages
-# # implement proxy fix (https://github.com/sjmf/reverse-proxy-minimal-example)
-# from werkzeug.middleware.proxy_fix import ProxyFix
-# app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1, x_port=1, x_proto=1, x_prefix=1)
+# Needed only if serving web pages
+# implement proxy fix (https://github.com/sjmf/reverse-proxy-minimal-example)
+from werkzeug.middleware.proxy_fix import ProxyFix
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1, x_port=1, x_proto=1, x_prefix=1)
 
-# if __name__ == "__main__":
-#     app.run(host ='0.0.0.0', port=5000)
+if __name__ == "__main__":
+    app.run(host ='0.0.0.0', port=5000)
