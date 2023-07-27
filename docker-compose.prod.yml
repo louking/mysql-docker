@@ -1,6 +1,9 @@
 version: '3.8'
 
 services:
+  app:
+    logging:
+      driver: journald
   web:
     logging:
       driver: journald
