@@ -29,8 +29,13 @@ from invoke import Exit
 
 APP_NAME = 'mysql-docker'
 
-@task
-def deploy(c, branchname='main', qualifier='prod'):
+qualifiers = ['prod', 'sandbox']
+
+@task(help={'qualifier': f"choose qualifier to control deployment behavior, one of {qualifiers}"})
+def deploy(c, qualifier, branchname='main'):
+    if qualifier not in qualifiers:
+        raise Exit(f'deploy qualifier parameter must be one of {qualifiers}')
+        
     print(f'c.user={c.user} c.host={c.host} branchname={branchname}')
 
     project_dir = f'/var/www/{c.host}/{APP_NAME}/{APP_NAME}'
