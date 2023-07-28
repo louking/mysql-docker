@@ -146,21 +146,21 @@ def create_app(config_obj, configfiles=None, init_for_operation=True):
         text = render_template('%s/%s.txt' % ctx, **context)
         sendmail(subject, from_email, recipient, html=html, text=text)
 
-    # Set up Flask-Security if database is available
+    # Set up Flask-Security and views if database is available
     if database_available:
         global user_datastore, security
         user_datastore = SQLAlchemyUserDatastore(db, User, Role)
         # security = UserSecurity(app, user_datastore)
         security = UserSecurity(app, user_datastore, send_mail=security_send_mail)
 
-    # activate views
-    from .views import userrole as userroleviews
-    from loutilities.user.views import bp as userrole
-    app.register_blueprint(userrole)
-    from .views.public import bp as public
-    app.register_blueprint(public)
-    from .views.admin import bp as admin
-    app.register_blueprint(admin)
+        # activate views
+        from .views import userrole as userroleviews
+        from loutilities.user.views import bp as userrole
+        app.register_blueprint(userrole)
+        from .views.public import bp as public
+        app.register_blueprint(public)
+        from .views.admin import bp as admin
+        app.register_blueprint(admin)
 
     # need to force app context else get
     #    RuntimeError: Working outside of application context.
