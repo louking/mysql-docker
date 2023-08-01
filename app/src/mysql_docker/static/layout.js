@@ -25,7 +25,7 @@ $( function() {
     metanav_select_interest.val(last_metanav_select_interest);
     metanav_select_interest.select2({
       placeholder: 'select an interest',
-      theme: "classic",
+      width: "style",
     });
 
     function check_redirect_url_rule() {
