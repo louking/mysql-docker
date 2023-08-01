@@ -10,7 +10,7 @@ services:
     depends_on:
       - db
     secrets:
-      - db-password
+      - root-password
       - users-password
       - mysql-docker-password
     networks:

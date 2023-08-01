@@ -49,7 +49,7 @@ _mysql_passfile() {
 	# ie: --defaults-extra-file=<( _mysql_passfile )
     cat <<-EOF
         [client]
-        password="`cat /run/secrets/db-password`"
+        password="`cat /run/secrets/root-password`"
 	EOF
     # note use of tab character above
 }

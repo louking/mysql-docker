@@ -13,7 +13,7 @@ services:
     ports:
       - "${MYSQL_PORT}:3306"
     secrets:
-      - db-password
+      - root-password
       - users-password
     volumes:
       - db-data:/var/lib/mysql
@@ -21,7 +21,7 @@ services:
       - backend-network
     environment:
       - MYSQL_DATABASE=users
-      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/db-password
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/root-password
       - MYSQL_USER=users
       - MYSQL_PASSWORD_FILE=/run/secrets/users-password
 
@@ -61,7 +61,7 @@ services:
     networks:
       - backend-network
     secrets:
-      - db-password
+      - root-password
     volumes:
       - ./config/msmtprc:/etc/msmtprc:ro
     environment:
@@ -80,7 +80,7 @@ services:
     depends_on:
       - db
     secrets:
-      - db-password
+      - root-password
       - users-password
       - mysql-docker-password
     networks:
@@ -99,7 +99,7 @@ volumes:
   db-data:
 
 secrets:
-  db-password:
+  root-password:
     file: config/db/root-password.txt
   users-password:
     file: config/db/users-password.txt
