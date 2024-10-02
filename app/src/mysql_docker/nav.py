@@ -6,6 +6,10 @@ define navigation bar based on privileges
 
 # standard
 
+# hack for flask_nav, see https://github.com/mbr/flask-nav/issues/28#issuecomment-1491784747
+import collections
+collections.MutableMapping = collections.abc.MutableMapping
+
 # pypi
 from flask import g, current_app, url_for, request
 from flask_nav import Nav
