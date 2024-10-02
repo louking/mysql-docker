@@ -1,11 +1,11 @@
-version: "3.8"
-
 # see .env for image version env variables
 # see repo/settings/environments for image version env variables for github actions
 services:
   db:
     # https://github.com/docker-library/mysql/issues/275#issuecomment-636831964
     image: mysql:${MYSQL_VER}
+    # # changed in mysql 8.4
+    # command: --mysql-native-password=ON
     command: '--default-authentication-plugin=mysql_native_password'
     # command: '--default-authentication-plugin=mysql_native_password --log_error_verbosity=3' # mysql
     restart: always
@@ -76,23 +76,25 @@ services:
       context: app
       args:
         - PYTHON_VER=${PYTHON_VER}
+        - APP_DATABASE=${APP_DATABASE}
     restart: always
     depends_on:
       - db
     secrets:
       - root-password
       - users-password
-      - mysql-docker-password
+      - appdb-password
     networks:
       - backend-network
       - frontend-network
     volumes:
       - ./config:/config:ro
+      - ${DB_INIT_DIR}:/initdb.d
     environment:
       - FLASK_DEBUG=True
-      - APP_DATABASE=mysql-docker
-      - APP_USER=mysql-docker
-      - APP_PASSWORD_FILE=/run/secrets/mysql-docker-password
+      - APP_DATABASE=${APP_DATABASE}
+      - APP_USER=${APP_DATABASE}
+      - APP_PASSWORD_FILE=/run/secrets/appdb-password
     command: ["./dbupgrade_and_run.sh", "gunicorn", "--reload", "--bind", "0.0.0.0:5000", "app:app"]
 
 volumes:
@@ -103,8 +105,8 @@ secrets:
     file: config/db/root-password.txt
   users-password:
     file: config/db/users-password.txt
-  mysql-docker-password:
-    file: config/db/mysql-docker-password.txt
+  appdb-password:
+    file: config/db/appdb-password.txt
 
 networks:
   backend-network:

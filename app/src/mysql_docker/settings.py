@@ -9,7 +9,6 @@ import logging
 
 # homegrown
 from loutilities.configparser import getitems
-from . import appname
 
 
 class Config(object):
@@ -66,7 +65,7 @@ class RealDb(Config):
             config.update(getitems(configfile, 'database'))
         # https://flask-sqlalchemy.palletsprojects.com/en/2.x/binds/
         dbuser = config['dbuser']
-        with open(f'/run/secrets/{appname}-password') as pw:
+        with open(f'/run/secrets/appdb-password') as pw:
             password = pw.readline().strip()
         # password = config['dbpassword']
         dbserver = config['dbserver']
