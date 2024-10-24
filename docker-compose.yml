@@ -118,5 +118,4 @@ secrets:
 
 networks:
   backend-network:
-    name: docker-backend
   frontend-network:
