@@ -69,9 +69,13 @@ services:
       - root-password
     volumes:
       - ./config/msmtprc:/etc/msmtprc:ro
+      - ${VAR_LOG_HOST}:/var/log
+      - ${BACKUP_FOLDER_HOST}/users:/backup
     environment:
       - TZ=America/New_York
       - APP_VER=${APP_VER}
+      - APP_DATABASE=users
+      - BACKUP=${BACKUP}
     # start crond with log level 8 in foreground, output to stderr
     command: ["crond", "-f", "-d", "8"]
     # use this to debug
@@ -98,7 +102,7 @@ services:
       - ./config:/config:ro
       - ${DB_INIT_DIR}:/initdb.d
     environment:
-      - FLASK_DEBUG=True
+      - FLASK_DEBUG=${FLASK_DEBUG}
       - APP_VER=${APP_VER}
       - APP_DATABASE=${APP_DATABASE}
       - APP_USER=${APP_DATABASE}

@@ -28,6 +28,7 @@ from fabric import task
 from invoke import Exit
 
 APP_NAME = 'mysql-docker'
+DOCKER_NAME = 'users'
 
 qualifiers = ['prod', 'sandbox']
 
@@ -38,15 +39,13 @@ def deploy(c, qualifier, branchname='main'):
         
     print(f'c.user={c.user} c.host={c.host} branchname={branchname}')
 
-    project_dir = f'/var/www/{c.host}/{APP_NAME}/{APP_NAME}'
+    project_dir = f'/user/appuser/{DOCKER_NAME}-{qualifier}'
 
-    c.run(f'cd {project_dir} && git pull')
-    
-    if not c.run(f'cd {project_dir} && git show-ref --verify --quiet refs/heads/{branchname}', warn=True):
-        raise Exit(f'branchname {branchname} does not exist')
+    for the_file in ['docker-compose.yml']:
+        if not c.run(f"cd {project_dir} && curl --fail -O 'https://raw.githubusercontent.com/louking/{APP_NAME}/{branchname}/{the_file}'", warn=True):
+            raise Exit(f'louking/{APP_NAME}/{branchname}/{the_file} does not exist')
 
-    c.run(f'cd {project_dir} && git checkout {branchname}')
-    
     # stop and build/start docker services
     c.run(f'cd {project_dir} && docker compose down')
-    c.run(f'cd {project_dir} && docker compose -f docker-compose.yml -f docker-compose.{qualifier}.yml up --build -d')
+    c.run(f'cd {project_dir} && docker compose up -d')
+    # c.run(f'cd {project_dir} && docker compose -f docker-compose.yml -f docker-compose.{qualifier}.yml up --build -d')
