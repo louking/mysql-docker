@@ -39,7 +39,7 @@ def deploy(c, qualifier, branchname='main'):
         
     print(f'c.user={c.user} c.host={c.host} branchname={branchname}')
 
-    project_dir = f'/user/appuser/{DOCKER_NAME}-{qualifier}'
+    project_dir = f'~/{DOCKER_NAME}-{qualifier}'
 
     for the_file in ['docker-compose.yml']:
         if not c.run(f"cd {project_dir} && curl --fail -O 'https://raw.githubusercontent.com/louking/{APP_NAME}/{branchname}/{the_file}'", warn=True):
