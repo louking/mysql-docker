@@ -1,0 +1,11 @@
+{
+    "files.watcherExclude": {
+        "**/.venv/**": true
+    },
+    "search.exclude": {
+        "**/.venv": true
+    },
+    "files.exclude": {
+        "**/.venv": true
+    }
+}
