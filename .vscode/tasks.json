@@ -6,10 +6,7 @@
         // {
         //     "label": "build docs",
         //     "type": "shell",
-        //     "command": "../../.venv/scripts/activate; ./make html",
-        //     "options": {
-        //         "cwd": "./web/docs"
-        //     },
+        //     "command": "${workspaceFolder}/.venv/bin/sphinx-build -b html ${workspaceFolder}/web/docs ${workspaceFolder}/web/docs/_build/html",
         //     "problemMatcher": []
         // },
         {

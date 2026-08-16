@@ -23,7 +23,7 @@
                 },
                 // allow debugging of pip installed packages
                 {
-                    "localRoot": "${workspaceFolder}/.venv/Lib/site-packages",
+                    "localRoot": "${workspaceFolder}/.venv/lib/python3.10/site-packages",
                     "remoteRoot": "/usr/local/lib/python3.12/site-packages"
                 }
             ],
@@ -42,7 +42,7 @@
                 },
                 // allow debugging of pip installed packages
                 {
-                    "localRoot": "${workspaceFolder}/.venv/Lib/site-packages",
+                    "localRoot": "${workspaceFolder}/.venv/lib/python3.10/site-packages",
                     "remoteRoot": "/usr/local/lib/python3.12/site-packages"
                 },
                 // see https://code.visualstudio.com/docs/editor/variables-reference#_variables-scoped-per-workspace-folder
